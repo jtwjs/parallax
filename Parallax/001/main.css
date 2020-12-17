@@ -50,6 +50,11 @@ section {
 
 .nav-list-item {
   font-size: 1.2rem;
+  transition: 0.3s;
+}
+
+.nav-list-item.active {
+  color: #222;
 }
 
 .nav-list-item a {
