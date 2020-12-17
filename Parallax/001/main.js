@@ -1,6 +1,6 @@
 (() => {
     const main = document.querySelector('#main');
-    const navbar = document.querySelector('.navbar');
+    const header = document.querySelector('#header');
     const categories = {
         selectCategory(elm) {
             selectedCategory = elm;
@@ -29,6 +29,15 @@
             target = target.parentNode;
             const category = target.dataset.category;
             scrollIntoView(category);
+        }
+
+        if(target.nodeName ==='BUTTON') {
+            header.classList.toggle('show');
+            if(target.parentNode.classList.contains('show')) {
+                target.innerText = 'close';
+            } else {
+                target.innerText = 'open';
+            }
         }
     }
 
@@ -68,7 +77,7 @@
     }
 
     function init() {
-        navbar.addEventListener('click',headerClickHandler);   
+        header.addEventListener('click',headerClickHandler);   
     }
     init();
 })();
