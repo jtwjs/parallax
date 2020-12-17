@@ -1,27 +1,34 @@
 (() => {
     const main = document.querySelector('#main');
     const header = document.querySelector('#header');
-    const categories = {
-        selectCategory(elm) {
-            selectedCategory = elm;
-        },
-        select(elm) {
-            elm.classList.add('active');
-            this.selectCategory(elm);
-        },
-        unselect(elm) {
-            elm.classList.remove('active');
-        }
-
+    const dots = document.querySelector('.dot');
+    const sectionList = Array.from(main.children);
+    class categories {
+        constructor(elm) {
+            this._selectedElm = elm.parentNode.querySelector('.active');
+            this._category = {
+                selectElm(elm) {
+                    this._selectedElm = elm;
+                },
+                select(elm) {
+                    elm.classList.add('active');
+                    this.selectElm(elm);
+                },
+                unselect(elm) {
+                    elm.classList.remove('active');
+                },
+            };
+        };
+        
+        oneOfThem(elm) {
+            if(this._selectedElm) {
+                this._category.unselect(this._selectedElm);
+            }
+            this._category.select(elm);    
+        };
     };
-    let selectedCategory = document.querySelector('.nav-list-item.active');
 
-    function oneOfThem(elm) {
-        if(selectedCategory) {
-            categories.unselect(selectedCategory);
-        }
-        categories.select(elm);
-    }
+
 
     function headerClickHandler(e) {
         let target = e.target;
@@ -41,8 +48,30 @@
         }
     }
 
+    function sectionAnimation() {
+        const observerOption = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.5,
+        }        
+        const observerCallback = (entries, observer) => {
+            entries.forEach((entry) => {
+                if(entry.isIntersecting) {
+                    entry.target.classList.add('show');
+                } else {
+                    entry.target.classList.remove('show');
+                }
+            });
+        }
+
+        const observer = new IntersectionObserver(observerCallback, observerOption);
+        for (const section of sectionList) {
+            observer.observe(section);
+        }
+    }
+    sectionAnimation();
+
     function scrollSectionObserve() {
-        const sectionList = Array.from(main.children);
         const observerOption = {
             root: null,
             rootMargin: '0px',
@@ -71,8 +100,12 @@
         } else {
             selectedIndex = index - 1;
         }
-        const navItem = document.querySelector(`[data-category="#${sectionList[selectedIndex].id}"]`);
-        oneOfThem(navItem);
+        const navItem = document.querySelector(`.nav-list-item[data-category="#${sectionList[selectedIndex].id}"]`);
+        const dotItem = document.querySelector(`.dot-item[data-category="#${sectionList[selectedIndex].id}"]`);
+        const navCategory = new categories(navItem);
+        const dotCategory = new categories(dotItem);
+        navCategory.oneOfThem(navItem);
+        dotCategory.oneOfThem(dotItem);
     }
 
     function scrollIntoView(elem){ 
@@ -90,12 +123,20 @@
         } else {
             header.classList.remove('sticky');
         }
+    }
 
+    function dotClickHandler(e) {
+        let target = e.target;
+        console.log(target);
+        if(target.nodeName === 'LI') {
+            scrollIntoView(target.dataset.category);
+        }
     }
 
     function init() {
         window.addEventListener('scroll', scrollHandler);
         header.addEventListener('click',headerClickHandler);   
+        dots.addEventListener('click',dotClickHandler);
     }
     init();
 })();
