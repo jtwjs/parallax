@@ -8,6 +8,7 @@
 }
 
 body {
+  position: relative;
   font-family: var(--font-main-font);
   background-color: var(--color-black);
   overflow-x: hidden;
@@ -129,6 +130,31 @@ section:nth-child(2n) .quote {
   margin-right: 0;
   margin-left: -5vw;
   text-align: left;
+}
+
+/* Scroll Table */
+.scroll-table {
+  position: fixed;
+  top: 5%;
+  right: 2%;
+  padding: 1rem;
+  font-weight: 100;
+  color: rgba(255, 255, 255, 0.4);
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.scroll-table-item {
+  line-height: 1.5;
+}
+
+.current-pixel,
+.scroll-pixel {
+  font-weight: 600;
+  color: black;
+}
+
+.active .scroll-pixel {
+  color: red;
 }
 
 @media screen and (max-width: 768px) {
