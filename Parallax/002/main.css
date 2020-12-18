@@ -1,0 +1,168 @@
+:root {
+  /* Font */
+  --font-main-font: "Lato", sans-serif;
+  /* Colo */
+  --color-orange: #dc6e25;
+  --color-black: #111;
+  --color-white: #fff;
+}
+
+body {
+  font-family: var(--font-main-font);
+  background-color: var(--color-black);
+  overflow-x: hidden;
+}
+
+section {
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  min-height: 100vh;
+  padding-bottom: 30vh;
+  color: var(--color-white);
+  font-weight: 100;
+}
+
+section:last-child {
+  padding-bottom: 0;
+}
+
+section:nth-child(2n) {
+  justify-content: flex-end;
+}
+
+img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Header */
+#header {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  padding: 5rem;
+}
+
+.header-title {
+  position: relative;
+  top: -8vw;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding-right: 10vw;
+  font-size: 9vw;
+  font-weight: 600;
+  color: var(--color-orange);
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.header-title .thiny {
+  align-self: flex-end;
+  font-weight: 100;
+  font-style: italic;
+}
+
+/* Main */
+#main {
+}
+
+.back-number {
+  position: absolute;
+  top: -12%;
+  right: 28%;
+  font-size: 21.875rem;
+  opacity: 0.1;
+  z-index: -1;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: 65%;
+  min-width: 600px;
+  height: 100%;
+  padding: 5rem 0;
+}
+
+.content-title {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  opacity: 0.8;
+}
+
+.content-img {
+  height: 75vh;
+}
+
+.quote {
+  position: absolute;
+  left: 8%;
+  bottom: 25%;
+  width: max-content;
+  font-size: 5vw;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: right;
+}
+.enter {
+  display: block;
+}
+
+section:nth-child(2n) .back-number {
+  left: 28%;
+}
+
+section:nth-child(2n) .content {
+  align-items: flex-start;
+}
+
+section:nth-child(2n) .quote {
+  left: unset;
+  right: 8%;
+  text-align: left;
+}
+
+section:last-child .quote {
+  bottom: 3%;
+}
+
+@media screen and (max-width: 768px) {
+  html {
+    font-size: 10px;
+  }
+
+  img {
+    object-position: 70%;
+  }
+
+  /* Main */
+  .back-number {
+    position: absolute;
+    top: -12%;
+    right: 28%;
+    font-size: 21.875rem;
+    opacity: 0.1;
+    z-index: -1;
+  }
+
+  .content {
+    min-width: auto;
+    width: 100%;
+    height: 100%;
+    padding: 5rem;
+  }
+
+  .quote {
+    font-size: 6vw;
+  }
+
+  section:last-child .quote {
+    bottom: 9%;
+  }
+}
