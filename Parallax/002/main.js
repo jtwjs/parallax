@@ -3,8 +3,10 @@
 (() => {
     const currentPixel = document.querySelector('.current-pixel');
     const scrollPixels = document.querySelectorAll('.scroll-pixel');
+    const body = document.querySelector('body');
     const main = document.querySelector('#main');
     const sectionList = Array.from(main.children);
+    const totalScrollHeight = body.clientHeight - window.innerHeight - 10;
     let yOffset;
     let currentScene = 0;
     let prevScrollHeight;
@@ -12,36 +14,51 @@
 
 
     function setLayout() {
-        currentPixel.innerText = window.pageYOffset;
-        for (const section of sectionList) {
-            scrollTopArr.push(section.offsetTop);
-        }
+        scrollTopArr = sectionList.map(x => {
+            if(x.offsetTop > totalScrollHeight) {
+                return totalScrollHeight;
+            }
+            return x.offsetTop;
+        });
+        
         scrollPixels.forEach((pixel, idx) => {
              pixel.innerText = scrollTopArr[idx];
+        });
+
+        scrollTopArr.map((x) => {
+            if(yOffset > x) {
+                if(currentScene < scrollTopArr.length - 1) {
+                    currentScene++;
+                }
+            }
         })
+        console.log(currentScene);
+        for (let i=0; i<currentScene; i++) {
+            scrollPixels[i].parentNode.classList.add('active');
+        }
     }
 
+
     function setPixels() {
-        currentPixel.innerText = Math.round(yOffset);
+        currentPixel.innerText = Math.round(window.pageYOffset);
     }
 
     function scrollLoop() {
-        
-            console.log(currentScene);
-            console.log(sectionList[currentScene].offsetTop);
-        if(yOffset > sectionList[currentScene].offsetTop) {
-            if (currentScene < sectionList.length - 1){
-                prevScrollHeight = sectionList[currentScene].offsetTop;
+
+        if(yOffset > scrollTopArr[currentScene]) {
+            if (currentScene < scrollTopArr.length - 1){
+                prevScrollHeight = scrollTopArr[currentScene];
                 scrollPixels[currentScene].parentNode.classList.add('active');
                 currentScene++;
             } else {
-                prevScrollHeight = sectionList[currentScene].offsetTop;
+                prevScrollHeight = scrollTopArr[currentScene];
                 scrollPixels[currentScene].parentNode.classList.add('active');
             }
         }
+
          if(yOffset < prevScrollHeight) {
             if(currentScene === 0) return;
-            if(prevScrollHeight === sectionList[sectionList.length - 1].offsetTop) {
+            if(prevScrollHeight === scrollTopArr[sectionList.length - 1]) {
                 scrollPixels[currentScene].parentNode.classList.remove('active');    
                 currentScene--;
                 return;
@@ -57,7 +74,11 @@
     }
     
     function init() {
-        setLayout();
+        window.addEventListener('load', () => {
+            setLayout();
+            setPixels();
+            scrollLoop();
+        })
         window.addEventListener('scroll', () => {
             yOffset = window.pageYOffset;
             setPixels();
